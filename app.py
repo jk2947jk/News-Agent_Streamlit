@@ -1,4 +1,3 @@
-Set-Content app.py @"
 from rich import print
 import typer
 
@@ -10,4 +9,3 @@ def hello():
 
 if __name__ == "__main__":
     app()
-"@
