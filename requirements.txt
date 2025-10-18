@@ -1,0 +1,10 @@
+Set-Content requirements.txt @"
+python-dotenv
+rich
+typer
+feedparser
+httpx
+beautifulsoup4
+lxml
+pydantic
+"@
