@@ -5,6 +5,8 @@ from dateutil import parser as dtparser
 import pandas as pd
 import re
 from collections import defaultdict
+from pathlib import Path
+import os
 
 # =========================
 # Page & Style
@@ -30,16 +32,22 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ---- Header with logo (change path if you add the PNG to your repo) ----
+# ---- Header with logo (robust path + helpful debug) ----
 with st.container():
     col_logo, col_title = st.columns([1, 8])
     with col_logo:
-        # Option A: If you committed the PNG to your repo (e.g., "assets/news_agent_logo.png"), set that path below:
-        st.image("assets/news_agent_logo.png")
-        # Option B: Temporary external URL or leave commented if not available
-        # st.image("https://raw.githubusercontent.com/<you>/<repo>/main/assets/news_agent_logo.png")
-        # (If you don't have a logo in the repo yet, just show the emoji title below)
-        pass
+        try:
+            # Build a path relative to this file (works the same locally and on Streamlit Cloud)
+            logo_path = Path(__file__).parent / "assets" / "news_agent_logo.png"
+            if logo_path.exists():
+                st.image(str(logo_path))
+            else:
+                st.caption("Logo not found at: " + str(logo_path))
+                # Debug hints to help you verify paths
+                st.caption("CWD: " + os.getcwd())
+                st.caption("Assets folder present? " + str((Path(__file__).parent / 'assets').exists()))
+        except Exception as e:
+            st.caption(f"Logo load error: {e}")
     with col_title:
         st.markdown('<div class="app-title">🗞️ News Agent</div>', unsafe_allow_html=True)
         st.markdown('<div class="app-tag">Curate • Filter • Search</div>', unsafe_allow_html=True)
